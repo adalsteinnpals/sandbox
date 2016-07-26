@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _weightValueFromScale = 0;
     _counter = 0;
     _step = 0;
+    counter = 0;
 
 
     connect(scale, SIGNAL(receivedWeight(int)),         this, SLOT(displayReceivedWeight(int)));
@@ -56,6 +57,24 @@ void MainWindow::recordWeight(int weightValueFromScale)
 
     _weightValueFromScale = weightValueFromScale;
 
+
+    // //////////////////////////////////
+    // stream to file
+    if (counter < 1000000){
+        fout.open("weight.csv", std::ofstream::out | std::ofstream::app); // trunc changed to app, trunc clears the file while app appends it
+        if (fout.is_open())
+        {
+            fout << counter << "," << _weightValueFromScale << std::endl;
+            counter = counter + 1;
+
+
+        }
+        fout.close();
+    }
+    // ////////////////////////////////////
+
+
+    /*
     if ( _weightValueFromScale < 50 && _step == 0)
     {
 
@@ -142,6 +161,7 @@ void MainWindow::recordWeight(int weightValueFromScale)
 
 
     }
+    */
 }
 
 
